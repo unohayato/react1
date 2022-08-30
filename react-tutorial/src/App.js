@@ -2,9 +2,7 @@ import { useState, useRef } from "react";
 import TodoList from "./TodoList";
 import { v4 as uuidv4 } from "uuid";
 function App() {
-  const [todos, setTodos] = useState([
-    {id: 1, name: "Todo1", completed: false}
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const todoNameRef = useRef();
 
@@ -22,7 +20,12 @@ function App() {
     const todo = newTodos.find((todo) => todo.id === id);
     todo.completed = !todo.completed;
     setTodos(newTodos);
-  }
+  };
+
+  const handleClear = () => {
+    const newTodos = todos.filter((todo) => !todo.completed);
+    setTodos(newTodos);
+  };
 
   return (
     <div>
@@ -30,8 +33,8 @@ function App() {
 
       <input type='text' ref={todoNameRef}/>
       <button onClick={handleAddTodo}>タスクの追加</button>
-      <button>完了したタスクの削除</button>
-      <div>残りのタスク:0</div>
+      <button onClick={handleClear}>完了したタスクの削除</button>
+      <div>残りのタスク:{todos.filter(todo => !todo.completed).length }</div>
     </div>
   );
 }
